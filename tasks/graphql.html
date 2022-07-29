@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>KingKongSwap Info</title>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+    </head>
+    <body>
+        <div class="container">
+            <table class="content">
+                <tr>
+                    <td>
+
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </body>
+    <script>
+        
+        async function GetData(){
+            let data;
+            axios.post('https://api.thegraph.com/subgraphs/name/sameepsi/quickswap03', {
+            query: `
+            {
+                mints(orderBy: timestamp, orderDirection: desc, where: { to: $user }) {
+                id
+                transaction {
+                    id
+                    timestamp
+                    __typename
+                }
+                pair {
+                    id
+                    token0 {
+                    id
+                    symbol
+                    __typename
+                    }
+                    token1 {
+                    id
+                    symbol
+                    __typename
+                    }
+                    __typename
+                }
+                to
+                liquidity
+                amount0
+                amount1
+                amountUSD
+                __typename
+                }
+                burns(orderBy: timestamp, orderDirection: desc, where: { sender: $user }) {
+                id
+                transaction {
+                    id
+                    timestamp
+                    __typename
+                }
+                pair {
+                    id
+                    token0 {
+                    symbol
+                    __typename
+                    }
+                    token1 {
+                    symbol
+                    __typename
+                    }
+                    __typename
+                }
+                sender
+                to
+                liquidity
+                amount0
+                amount1
+                amountUSD
+                __typename
+                }
+                swaps(orderBy: timestamp, orderDirection: desc, where: { to: $user }) {
+                id
+                transaction {
+                    id
+                    timestamp
+                    __typename
+                }
+                pair {
+                    token0 {
+                    symbol
+                    __typename
+                    }
+                    token1 {
+                    symbol
+                    __typename
+                    }
+                    __typename
+                }
+                amount0In
+                amount0Out
+                amount1In
+                amount1Out
+                amountUSD
+                to
+                __typename
+                }
+            `
+            })
+            .then((res) => {
+            console.log(res)
+            data=JSON.stringify(res.data.rows);
+            })
+            .catch((error) => {
+            console.error(error)
+            })
+            return data;
+
+        }
+
+
+
+    </script>
+</html>
